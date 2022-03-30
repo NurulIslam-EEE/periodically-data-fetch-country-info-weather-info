@@ -84,7 +84,7 @@ const CountryInfo = () => {
           height: "400px",
         }}
       >
-        <Card sx={{ width: "645px", padding: "20px" }}>
+        <Card sx={{ width: "500px", padding: "20px" }}>
           <CardMedia
             component="img"
             height="140"
