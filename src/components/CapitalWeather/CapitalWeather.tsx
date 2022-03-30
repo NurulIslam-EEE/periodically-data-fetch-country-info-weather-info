@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -21,20 +21,28 @@ const style = {
 interface Props {
   capital: string;
 }
+interface Cap {
+  [key: string]: any;
+}
 
 const CapitalWeather = ({ capital }: Props) => {
+  const [weather, setWeather] = useState<Cap>({});
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const handleWeather = (): void => {
+  useEffect(() => {
     const url = `http://api.weatherstack.com/current?access_key=fa027a9e31b44b9c048365d0fa283661&query=${capital}`;
-  };
+
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => setWeather(data));
+  }, [capital]);
+  console.log(weather, capital);
 
   return (
     <div>
       <Button sx={{ border: "1px solid black" }} onClick={handleOpen}>
-        See Raw Data
+        Capital Weather
       </Button>
       <Modal
         aria-labelledby="transition-modal-title"
@@ -49,8 +57,17 @@ const CapitalWeather = ({ capital }: Props) => {
       >
         <Fade in={open}>
           <Box sx={style}>
-            <Typography id="transition-modal-title" variant="h6" component="h2">
-              Raw Data
+            <img
+              src={weather?.current?.weather_icons[0]}
+              alt="Weather Icon"
+              height="100px"
+              width="150px"
+            />
+            <Typography id="transition-modal-title" variant="h4" component="h2">
+              Temperature:{weather?.current?.temperature}
+            </Typography>
+            <Typography id="transition-modal-title" variant="h4" component="h2">
+              Wind Speed:{weather?.current?.wind_speed}
             </Typography>
             <Typography
               id="transition-modal-description"

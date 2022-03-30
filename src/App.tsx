@@ -11,6 +11,8 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Box from "@mui/material/Box";
 
+import Typography from "@mui/material/Typography";
+
 import PaginationPage from "./components/Pagination/PaginationPage";
 import RawData from "./components/RawData/RawData";
 import CountryInfo from "./components/CountryInfo/CountryInfo";
@@ -46,10 +48,10 @@ function App() {
 
   const myInterval = window.setInterval(() => {
     setFetchPage2((fetchPage2 += 1));
-  }, 20000);
-  if (page > 49) {
-    clearInterval(myInterval);
-  }
+  }, 10000);
+  // if (page > 49) {
+  //   clearInterval(myInterval);
+  // }
 
   // pagination
 
@@ -64,6 +66,20 @@ function App() {
   const classes = useStyles();
   return (
     <div>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          height: "300px",
+        }}
+      >
+        <Typography gutterBottom variant="h4" component="div">
+          Story List
+        </Typography>
+      </Box>
+
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
@@ -101,13 +117,26 @@ function App() {
           justifyContent: "center",
           alignItems: "center",
           width: "100%",
-          height: "100px",
+          height: "60px",
         }}
       >
         <PaginationPage setPage={setPage} pageNumber={totalPage} />
       </Box>
 
       {/* Country Information */}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          height: "300px",
+        }}
+      >
+        <Typography gutterBottom variant="h4" component="div">
+          Country Details and Weather Details
+        </Typography>
+      </Box>
       <CountryInfo />
     </div>
   );
