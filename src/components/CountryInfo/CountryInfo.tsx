@@ -14,11 +14,15 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import CapitalWeather from "../CapitalWeather/CapitalWeather";
 
+interface Capi {
+  [key: string]: any;
+}
 const CountryInfo = () => {
   const [capital, setCapital] = useState<string>("dhaka");
   const [country, setCountry] = useState<string>("bangladesh");
   const [isChanged, setIsChanged] = useState<boolean>(false);
   const [singleCountry, setSingleCountry] = useState<any[]>([]);
+  const [weather, setWeather] = useState<Capi>({});
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setCountry(event.target.value);
@@ -47,6 +51,14 @@ const CountryInfo = () => {
     },
   });
   const { btn } = useStyles();
+
+  useEffect(() => {
+    const url = `http://api.weatherstack.com/current?access_key=${process.env.REACT_APP_YOUR_ACCESS_KEY}&query=${capital}`;
+    console.log(url);
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => setWeather(data));
+  }, [capital, country,isChanged,singleCountry]);
 
   return (
     <div>
@@ -111,7 +123,7 @@ const CountryInfo = () => {
           </CardContent>
           <CardActions>
             <Button size="small">
-              <CapitalWeather capital={capital} />
+              <CapitalWeather weather={weather} />
             </Button>
           </CardActions>
         </Card>

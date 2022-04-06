@@ -18,26 +18,26 @@ const style = {
   p: 4,
 };
 
+// interface Props {
+//   capital: string;
+// }
 interface Props {
-  capital: string;
-}
-interface Cap {
   [key: string]: any;
 }
 
-const CapitalWeather = ({ capital }: Props) => {
-  const [weather, setWeather] = useState<Cap>({});
+const CapitalWeather = ({ weather }: Props) => {
+  // const [weather, setWeather] = useState<Cap>({});
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  useEffect(() => {
-    const url = `http://api.weatherstack.com/current?access_key=fa027a9e31b44b9c048365d0fa283661&query=${capital}`;
+  // useEffect(() => {
+  //   const url = `http://api.weatherstack.com/current?access_key=fa027a9e31b44b9c048365d0fa283661&query=${capital}`;
 
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => setWeather(data));
-  }, [capital]);
-  console.log(weather, capital);
+  //   fetch(url)
+  //     .then((res) => res.json())
+  //     .then((data) => setWeather(data));
+  // }, [capital, open]);
+  // console.log(weather, capital);
 
   return (
     <div>
