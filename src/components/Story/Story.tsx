@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { setInterval } from "timers/promises";
+import { Link } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -32,7 +33,7 @@ function Story() {
   const postPerPage = 10;
   useEffect(() => {
     const url = `https://hn.algolia.com/api/v1/search_by_date?tags=story&page=${fetchPage2}`;
-    // console.log(url)
+    console.log(url);
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
@@ -42,7 +43,7 @@ function Story() {
           setStory(totalData);
         }
         setTotalPage(story?.length / 10);
-        // console.log(story,page,sliceStory)
+        // console.log(story, page, sliceStory);
       });
   }, [fetchPage2]);
 
@@ -64,6 +65,7 @@ function Story() {
   }, [page, story, fetchPage2]);
 
   const classes = useStyles();
+  console.log(page);
   return (
     <div>
       <Box
@@ -103,8 +105,9 @@ function Story() {
                 <TableCell align="right">{row.created_at}</TableCell>
                 <TableCell align="right">{row.author}</TableCell>
                 <TableCell align="right">
-                  {" "}
-                  <RawData row={row} />{" "}
+                  <Link to={`/rawData/${row.objectID}/${page}`}>
+                    See Raw Data
+                  </Link>
                 </TableCell>
               </TableRow>
             ))}

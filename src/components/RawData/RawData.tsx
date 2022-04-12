@@ -1,66 +1,72 @@
-import * as React from 'react';
-import Backdrop from '@mui/material/Backdrop';
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-import Fade from '@mui/material/Fade';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import React, { useState, useEffect } from "react";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import { useParams } from "react-router-dom";
 
+const bull = (
+  <Box
+    component="span"
+    sx={{ display: "inline-block", mx: "2px", transform: "scale(0.8)" }}
+  >
+    •
+  </Box>
+);
 
-
-const style = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
+const card = (
+  <React.Fragment>
+    <CardContent>
+      <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+        Word of the Day
+      </Typography>
+      <Typography variant="h5" component="div">
+        be{bull}nev{bull}o{bull}lent
+      </Typography>
+      <Typography sx={{ mb: 1.5 }} color="text.secondary">
+        adjective
+      </Typography>
+      <Typography variant="body2">
+      
+        <br />
+        {'"a benevolent smile"'}
+      </Typography>
+    </CardContent>
+    <CardActions>
+      <Button size="small">Learn More</Button>
+    </CardActions>
+  </React.Fragment>
+);
 
 interface Props {
-  [key:string]:any
-  
+  [key: string]: any;
 }
 
-const RawData = ({row}:Props) => {
-    const stringData=JSON.stringify(row)
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+const RawData = () => {
+  const { id, page } = useParams();
+  console.log(typeof id);
+  const [filterStory, setFilterStory] = useState([]);
+  useEffect(() => {
+    const url = `https://hn.algolia.com/api/v1/search_by_date?tags=story&page=${page}`;
+    console.log(url);
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        const filterData = data?.hits?.filter((d: Props) => d.objectID == id);
+        setFilterStory(filterData);
+        console.log(data, filterData);
+      });
+  }, [id, page]);
 
- 
-    return (
-      <div>
-      <Button variant="outlined"  onClick={handleOpen}>See Raw Data
-      
-      </Button>
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={open}>
-          <Box sx={style}>
-            <Typography id="transition-modal-title" variant="h6" component="h2">
-             Raw Data
-            </Typography>
-            <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-             {stringData}
-            </Typography>
-          </Box>
-        </Fade>
-      </Modal>
-    </div>
-    );
+  console.log(id, page, filterStory);
+  return (
+    <Box sx={{ minWidth: 275 }}>
+      <Card variant="outlined">{card}</Card>
+    </Box>
+  );
 };
 
 export default RawData;
