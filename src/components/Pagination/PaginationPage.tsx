@@ -10,7 +10,7 @@ const PaginationPage = ({ pageNumber, setPage }: Props) => {
   // const {totalPage}=props
   // console.log(Math.ceil(pageNumber))
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value - 1);
+    setPage(value);
   };
   return (
     <Stack sx={{ margin: "20px auto" }} spacing={1}>

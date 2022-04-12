@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { setInterval } from "timers/promises";
 import { Link } from "react-router-dom";
+import TextField from "@mui/material/TextField";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -22,15 +23,23 @@ function Story() {
     table: {
       minWidth: 650,
     },
+    btn:{
+      padding:'20px 100px !important',
+      display:'block !important'
+    },
+    inputField:{
+      width:'200px !important',
+      display:'block !important'
+    }
   });
 
   const [story, setStory] = useState<any>([]);
   const [sliceStory, setSliceStory] = useState<any[]>([]);
   const [page, setPage] = useState(0);
   let [fetchPage2, setFetchPage2] = useState(0);
-  const [totalPage, setTotalPage] = useState(2);
+  const [totalPage, setTotalPage] = useState(1);
 
-  const postPerPage = 10;
+  const postPerPage = 20;
   useEffect(() => {
     const url = `https://hn.algolia.com/api/v1/search_by_date?tags=story&page=${fetchPage2}`;
     console.log(url);
@@ -42,7 +51,7 @@ function Story() {
           const totalData = [...story, ...newData];
           setStory(totalData);
         }
-        setTotalPage(story?.length / 10);
+        setTotalPage(story?.length / 20);
         // console.log(story, page, sliceStory);
       });
   }, [fetchPage2]);
@@ -66,6 +75,9 @@ function Story() {
 
   const classes = useStyles();
   console.log(page);
+
+  // country
+  const [country, setCountry] = useState<string>("");
   return (
     <div>
       <Box
@@ -133,14 +145,44 @@ function Story() {
           justifyContent: "center",
           alignItems: "center",
           width: "100%",
-          height: "300px",
+          height: "100px",
         }}
       >
         <Typography gutterBottom variant="h4" component="div">
           Country Details and Weather Details
         </Typography>
       </Box>
-      <CountryInfo />
+
+      {/* country info */}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          height: "100px",
+          marginBottom: "20px",
+        }}
+      >
+        
+          <TextField
+          className={classes.inputField}
+            required
+            id="outlined-required"
+            label="Enter Country"
+            defaultValue=""
+            onChange={(event) => setCountry(event.target.value)}
+          />
+          <br/>
+          <br/>
+          <Link to={`/countryInfo/${country}`}>
+          <button className={classes.btn}  disabled={!country} type="submit">
+            Submit
+          </button>
+       
+          </Link>
+        
+      </Box>
     </div>
   );
 }
